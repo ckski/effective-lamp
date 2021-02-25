@@ -33,8 +33,9 @@ public final class BanknoteDispenser extends AbstractDevice<BanknoteDispenserLis
 	 *             If capacity is not positive.
 	 */
 	public BanknoteDispenser(int capacity) {
-		if(capacity <= 0)
+		if(capacity <= 0){
 			throw new SimulationException(new IllegalArgumentException("Capacity must be positive: " + capacity));
+		}
 		this.maxCapacity = capacity;
 	}
 
@@ -61,14 +62,16 @@ public final class BanknoteDispenser extends AbstractDevice<BanknoteDispenserLis
 	 *             If any banknote is null.
 	 */
 	public void load(Banknote... banknotes) throws SimulationException, OverloadException {
-		if(maxCapacity < queue.size() + banknotes.length)
+		if(maxCapacity < queue.size() + banknotes.length) {
 			throw new OverloadException("Capacity of dispenser is exceeded by load");
+		}
 
 		for(Banknote banknote : banknotes)
-			if(banknote == null)
+			if(banknote == null) {
 				throw new SimulationException(new NullPointerException("A banknote is null."));
-			else
+			} else {
 				queue.add(banknote);
+			}
 
 		notifyLoad(banknotes);
 	}
@@ -133,15 +136,17 @@ public final class BanknoteDispenser extends AbstractDevice<BanknoteDispenserLis
 	 *             if the dispenser is currently disabled.
 	 */
 	public void emit() throws EmptyException, DisabledException, OverloadException {
-		if(isDisabled())
+		if(isDisabled()) {
 			throw new DisabledException();
+		}
 
-		if(queue.isEmpty())
+		if(queue.isEmpty()) {
 			throw new EmptyException();
+		}
 
 		Banknote banknote = queue.remove();
 
-		if(sink.hasSpace())
+		if(sink.hasSpace()) {
 			try {
 				sink.deliver(banknote);
 			}
@@ -149,13 +154,15 @@ public final class BanknoteDispenser extends AbstractDevice<BanknoteDispenserLis
 				// Should never happen
 				throw new SimulationException(e);
 			}
-		else
+		} else {
 			throw new OverloadException("The sink is full.");
+		}
 
-		if(queue.isEmpty())
+		if(queue.isEmpty()) {
 			notifyBanknotesEmpty();
-		else
+		} else {
 			notifyBanknoteRemoved(banknote);
+		}
 	}
 
 	private void notifyBanknoteRemoved(Banknote banknote) {
