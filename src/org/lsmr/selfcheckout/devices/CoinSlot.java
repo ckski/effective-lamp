@@ -46,6 +46,9 @@ public final class CoinSlot extends AbstractDevice<CoinSlotListener> implements 
 		if(coin == null)
 			throw new SimulationException(new NullPointerException("coin is null"));
 
+		if(sink == null)
+    			throw new SimulationException(new NullPointerException("sink is null"));
+
 		notifyCoinInserted();
 
 		if(sink.hasSpace()) {

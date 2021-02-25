@@ -136,7 +136,7 @@ public final class BanknoteDispenser extends AbstractDevice<BanknoteDispenserLis
 		if(isDisabled())
 			throw new DisabledException();
 
-		if(queue.size() == 0)
+		if(queue.isEmpty())
 			throw new EmptyException();
 
 		Banknote banknote = queue.remove();
